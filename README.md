@@ -6,6 +6,7 @@ One of the most challenging aspects is to avoid memory leaks when dynamically al
 
 🚀 To get the source code of the functions:
 
+
 ➡️ In the terminal go in the folder where you want to install the functions.
 
 To create the folder: mkdir Folder_Name
@@ -13,6 +14,7 @@ To create the folder: mkdir Folder_Name
 To go in the folder:  cd Folder_NAme
 
 To ensure that we are in the good folder:  pwd and you will see a path like: /home//Desktop/Folder_Name
+
 
 ➡️ Download the source code in your folder with this command:
 
