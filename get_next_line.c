@@ -1,0 +1,77 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wngambi <wngambi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/08 12:52:39 by wngambi           #+#    #+#             */
+/*   Updated: 2025/11/08 19:37:41 by wngambi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+char	*extract_line(char *stash)
+{
+	char	*line;
+	char	*newline_ptr;
+
+	if (!stash || *stash == '\0')
+		return (NULL);
+	newline_ptr = ft_strchr(stash, '\n');
+	if (newline_ptr)
+		line = ft_strndup(stash, newline_ptr - stash + 1);
+	else
+		line = ft_strdup(stash);
+	return (line);
+}
+
+char	*update_clean_stash(char *stash)
+{
+	char	*new_stash;
+	char	*newline_ptr;
+
+	if (!stash)
+		return (NULL);
+	newline_ptr = ft_strchr(stash, '\n');
+	if (!newline_ptr)
+	{
+		free(stash);
+		return (NULL);
+	}
+	new_stash = ft_strdup(newline_ptr + 1);
+	free(stash);
+	return (new_stash);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stash;
+	char		*buf;
+	char		*line;
+	int			r;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (!(buf = malloc(BUFFER_SIZE + 1)))
+		return (NULL);
+	r = 1;
+	while (r > 0 && (!stash || !ft_strchr(stash, '\n')))
+	{
+		r = read(fd, buf, BUFFER_SIZE);
+		if (r < 0)
+			return (free(buf), free(stash), stash = NULL, NULL);
+		buf[r] = '\0';
+		if (!(stash = ft_strjoin(stash, buf)))
+			return (free(buf), NULL);
+	}
+	if (!stash || !*stash)
+		return (free(buf), free(stash), stash = NULL, NULL);
+	line = extract_line(stash);
+	stash = update_clean_stash(stash);
+	free(buf);
+	return (line);
+}
+
+
