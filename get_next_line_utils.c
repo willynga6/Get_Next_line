@@ -6,7 +6,7 @@
 /*   By: wngambi <wngambi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 11:55:17 by wngambi           #+#    #+#             */
-/*   Updated: 2025/11/08 17:10:01 by wngambi          ###   ########.fr       */
+/*   Updated: 2025/11/09 22:32:10 by wngambi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	int (i) = 0;
 	int (j) = 0;
-
 	if (!s1)
 		s1 = ft_strdup("");
 	if (!s2)

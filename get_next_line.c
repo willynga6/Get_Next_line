@@ -6,7 +6,7 @@
 /*   By: wngambi <wngambi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 12:52:39 by wngambi           #+#    #+#             */
-/*   Updated: 2025/11/08 19:37:41 by wngambi          ###   ########.fr       */
+/*   Updated: 2025/11/09 22:56:02 by wngambi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!(buf = malloc(BUFFER_SIZE + 1)))
+	buf = malloc(BUFFER_SIZE + 1);
+	if (!buf)
 		return (NULL);
 	r = 1;
 	while (r > 0 && (!stash || !ft_strchr(stash, '\n')))
@@ -63,15 +64,12 @@ char	*get_next_line(int fd)
 		if (r < 0)
 			return (free(buf), free(stash), stash = NULL, NULL);
 		buf[r] = '\0';
-		if (!(stash = ft_strjoin(stash, buf)))
+		stash = ft_strjoin(stash, buf);
+		if (!stash)
 			return (free(buf), NULL);
 	}
 	if (!stash || !*stash)
 		return (free(buf), free(stash), stash = NULL, NULL);
 	line = extract_line(stash);
-	stash = update_clean_stash(stash);
-	free(buf);
-	return (line);
+	return (stash = update_clean_stash(stash), free(buf), line);
 }
-
-
