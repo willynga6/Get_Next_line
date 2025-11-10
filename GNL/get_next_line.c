@@ -6,7 +6,7 @@
 /*   By: wngambi <wngambi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 12:52:39 by wngambi           #+#    #+#             */
-/*   Updated: 2025/11/10 02:10:02 by wngambi          ###   ########.fr       */
+/*   Updated: 2025/11/10 02:26:28 by wngambi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*update_clean_stash(char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash[1024];
+	static char	*stash;
 	char		*buf;
 	char		*line;
 	int			r;
@@ -58,18 +58,18 @@ char	*get_next_line(int fd)
 	if (!buf)
 		return (NULL);
 	r = 1;
-	while (r > 0 && (!stash[fd] || !ft_strchr(stash[fd], '\n')))
+	while (r > 0 && (!stash || !ft_strchr(stash, '\n')))
 	{
 		r = read(fd, buf, BUFFER_SIZE);
 		if (r < 0)
-			return (free(buf), free(stash[fd]), stash[fd] = NULL, NULL);
+			return (free(buf), free(stash), stash = NULL, NULL);
 		buf[r] = '\0';
-		stash[fd] = ft_strjoin(stash[fd], buf);
-		if (!stash[fd])
+		stash = ft_strjoin(stash, buf);
+		if (!stash)
 			return (free(buf), NULL);
 	}
-	if (!stash[fd] || !*stash[fd])
-		return (free(buf), free(stash[fd]), stash[fd] = NULL, NULL);
-	line = extract_line(stash[fd]);
-	return (stash[fd] = update_clean_stash(stash[fd]), free(buf), line);
+	if (!stash || !*stash)
+		return (free(buf), free(stash), stash = NULL, NULL);
+	line = extract_line(stash);
+	return (stash = update_clean_stash(stash), free(buf), line);
 }
