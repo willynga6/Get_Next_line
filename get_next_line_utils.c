@@ -1,40 +1,36 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: wngambi <wngambi@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/08 11:55:17 by wngambi           #+#    #+#             */
-/*   Updated: 2025/11/09 22:32:10 by wngambi          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
-int	ft_strlen(char *str)
+int	ft_strlen(char *s)
 {
-	int	i;
+	int	i = 0;
 
-	if (!str)
+	if (!s)
 		return (0);
-	i = 0;
-	while (str[i])
+	while (s[i])
 		i++;
 	return (i);
 }
-/*============================================*/
+
+char	*ft_strchr(char *s, char c)
+{
+	if (!s)
+		return (NULL);
+	while (*s && (*s != c))
+		s++;
+	if (*s == c)
+		return (s);
+	return (NULL);
+}
 
 char	*ft_strdup(char *str)
 {
+	int		size = ft_strlen(str);
 	char	*copy;
 	int		i;
-	int		size;
 
 	if (!str)
 		return (NULL);
-	size = ft_strlen(str);
-	copy = malloc(sizeof(char) * (size + 1));
+	copy = malloc(size + 1);
 	if (!copy)
 		return (NULL);
 	i = 0;
@@ -46,24 +42,19 @@ char	*ft_strdup(char *str)
 	copy[i] = '\0';
 	return (copy);
 }
-/*============================================*/
 
-char	*ft_strndup(char *str, int n)
+char	*ft_strndup(char *str, int size)
 {
-	char	*copy;
 	int		i;
-	int		size;
+	char	*copy;
 
-	if (!str)
+	if (!str || size < 0)
 		return (NULL);
-	size = ft_strlen(str);
-	if (n > size)
-		n = size;
-	copy = malloc(sizeof(char) * (n + 1));
+	copy = malloc(size + 1);
 	if (!copy)
 		return (NULL);
 	i = 0;
-	while (i < n)
+	while (i < size && str[i])
 	{
 		copy[i] = str[i];
 		i++;
@@ -71,47 +62,73 @@ char	*ft_strndup(char *str, int n)
 	copy[i] = '\0';
 	return (copy);
 }
-
-/*============================================*/
 
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*copy;
+	int		i = 0;
+	int		j = 0;
 
-	int (i) = 0;
-	int (j) = 0;
-	if (!s1)
-		s1 = ft_strdup("");
 	if (!s2)
 		return (s1);
-	copy = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (!s1)
+	{
+		s1 = malloc(1);
+		if (!s1)
+			return (NULL);
+		s1[0] = '\0';
+	}
+	copy = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!copy)
-		return (NULL);
+		return (free(s1), NULL);
 	while (s1[i])
 	{
 		copy[i] = s1[i];
 		i++;
 	}
-	j = 0;
 	while (s2[j])
 		copy[i++] = s2[j++];
 	copy[i] = '\0';
 	free(s1);
 	return (copy);
 }
-/*============================================*/
 
-char	*ft_strchr(char *str, char c)
+char	*extract_line(char *stash)
 {
-	if (!str)
+	char	*nl;
+	int		len;
+
+	if (!stash || !stash[0])
 		return (NULL);
-	while (*str)
+	nl = ft_strchr(stash, '\n');
+	if (nl)
 	{
-		if (*str == c)
-			return (str);
-		str++;
+		len = nl - stash + 1;
+		return (ft_strndup(stash, len));
 	}
-	if (c == '\0')
-		return (str);
-	return (NULL);
+	return (ft_strdup(stash));
+}
+
+char	*clean_upgrade(char *stash)
+{
+	char	*nl;
+	char	*new_stash;
+
+	if (!stash)
+		return (NULL);
+	nl = ft_strchr(stash, '\n');
+	if (!nl)
+	{
+		free(stash);
+		return (NULL);
+	}
+	nl++; // avancer après '\n'
+	if (!*nl)
+	{
+		free(stash);
+		return (NULL);
+	}
+	new_stash = ft_strdup(nl);
+	free(stash);
+	return (new_stash);
 }
