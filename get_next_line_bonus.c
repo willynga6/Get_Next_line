@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wngambi <wngambi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/14 11:38:24 by wngambi           #+#    #+#             */
-/*   Updated: 2025/11/14 13:13:37 by wngambi          ###   ########.fr       */
+/*   Created: 2025/11/14 13:14:42 by wngambi           #+#    #+#             */
+/*   Updated: 2025/11/14 13:20:09 by wngambi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*clean_update_stash(char *stash)
 
 char	*get_next_line(int fd)
 {	
-	static char	*stash;
+	static char	*stash[1024];
 	char		*buffer;
 	int			lecture;
 	char		*line;
@@ -69,7 +69,7 @@ char	*get_next_line(int fd)
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
-	while (!ft_strchr(stash, '\n'))
+	while (!ft_strchr(stash[fd], '\n'))
 	{
 		lecture = read(fd, buffer, BUFFER_SIZE);
 		if (lecture == -1)
@@ -77,10 +77,10 @@ char	*get_next_line(int fd)
 		buffer[lecture] = '\0';
 		if (lecture == 0)
 			break ;
-		stash = ft_strjoin(stash, buffer);
+		stash[fd] = ft_strjoin(stash[fd], buffer);
 	}
-	line = extract_line(stash);
-	stash = clean_update_stash(stash);
+	line = extract_line(stash[fd]);
+	stash[fd] = clean_update_stash(stash[fd]);
 	free(buffer);
 	return (line);
 }

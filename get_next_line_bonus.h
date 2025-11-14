@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wngambi <wngambi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/08 11:50:55 by wngambi           #+#    #+#             */
-/*   Updated: 2025/11/08 18:18:21 by wngambi          ###   ########.fr       */
+/*   Created: 2025/11/14 13:19:23 by wngambi           #+#    #+#             */
+/*   Updated: 2025/11/14 13:19:39 by wngambi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
+
 # include <fcntl.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
 
-char	*ft_strdup(char *str); // Fonctionnelle
-char	*ft_strndup(char *str, int n); // Fonctionnelle
-int		ft_strlen(char *str); // Fonctionnelle
-char	*ft_strjoin(char *s1, char *s2); // Fonctionnelle
-char	*ft_strchr(char *str, char c); // Fonctionnelle
-
-char	*extract_line(char *stash);
-char	*update_clean_stash(char *stash);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strdup(char *s);
+char	*ft_strndup(char *s, int size);
+char	*ft_strchr(char *s, char c);
+int		ft_strlen(char *s);
 char	*get_next_line(int fd);
+char	*extract_line(char *stash);
+char	*clean_update_stash(char *stash);
 
 #endif
